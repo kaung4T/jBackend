@@ -37,10 +37,10 @@ Route::post('create_user', [AuthController::class, 'create_user'])->name('create
 Route::post('login_user', [AuthController::class, 'login_user'])->name('login_user');
 Route::get('all_user', [AuthController::class, 'all_user'])->name('all_user');
 
-Route::get('all_item', [ApiController::class, 'all_item'])->name('all_item');
-Route::post('create_item', [ApiController::class, 'create_item'])->name('create_item');
-Route::put('update_item/{id}', [ApiController::class, 'update_item'])->name('update_item');
-Route::delete('delete_item/{id}', [ApiController::class, 'delete_item'])->name('delete_item');
+Route::get('all_item', [ApiController::class, 'all_item'])->name('all_item')->middleware('jwt.verify');
+Route::post('create_item', [ApiController::class, 'create_item'])->name('create_item')->middleware('jwt.verify');
+Route::put('update_item/{id}', [ApiController::class, 'update_item'])->name('update_item')->middleware('jwt.verify');
+Route::delete('delete_item/{id}', [ApiController::class, 'delete_item'])->name('delete_item')->middleware('jwt.verify');
 
 // Auth
 // Route::get('all_item', [ApiController::class, 'all_item'])->name('all_item')->middleware('jwt.verify');
