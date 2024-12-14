@@ -6,84 +6,90 @@ use App\Models\Item;
 use App\Models\User;
 use GuzzleHttp\Psr7\Response;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
 
 class ApiController extends Controller
 {
     //
-    public function all_item (Request $request) {
-        $items = Item::all();
+    public function all_item(Request $request)
+    {
+        $items = DB::select('select * from items');;
         return response()->json([
-            "status"=> true,
-            "message"=> "Items",
-            "data"=> $items
+            "status" => true,
+            "message" => "Items",
+            "data" => $items
         ]);
     }
 
-    public function create_item (Request $request) {
+    public function create_item(Request $request)
+    {
         $validate = Validator::make($request->all(), [
-            "task"=> "required"
+            "task" => "required"
         ]);
 
-        if($validate->fails()) {
+        if ($validate->fails()) {
             return response()->json([
-                "status"=> false,
-                "message"=> "Validation Error"
+                "status" => false,
+                "message" => "Validation Error"
             ], 401);
         }
 
-        $item = Item::create([
-            "task"=> $request->task
-        ]);
+        $item = DB::insert('insert into items (task) values (?)', [$request->task]);
+
+        // $item = Item::create([
+        //     "task" => $request->task
+        // ]);
 
         return response()->json([
-            "status"=> true,
-            "message"=> "Item Created",
-            "data"=> $item
+            "status" => true,
+            "message" => "Item Created",
+            "data" => $item
         ], 200);
     }
 
-    public function update_item (Request $request, $id) {
+    public function update_item(Request $request, $id)
+    {
         $validate = Validator::make($request->all(), [
-            "task"=> "required"
+            "task" => "required"
         ]);
 
-        if($validate->fails()) {
+        if ($validate->fails()) {
             return response()->json([
-                "status"=> false,
-                "message"=> "Validation Error"
+                "status" => false,
+                "message" => "Validation Error"
             ], 401);
         }
 
         $item = Item::find($id);
         $item->update([
-            "task"=> $request->task
+            "task" => $request->task
         ]);
 
         return response()->json([
-            "status"=> true,
-            "message"=> "Item Updated",
-            "data"=> $item
+            "status" => true,
+            "message" => "Item Updated",
+            "data" => $item
         ], 200);
     }
 
-    public function delete_item (Request $request, $id) {
+    public function delete_item(Request $request, $id)
+    {
         $item = Item::find($id);
 
-        if(!$item) {
+        if (!$item) {
             return response()->json([
-                "status"=> false,
-                "message"=> "No Item"
+                "status" => false,
+                "message" => "No Item"
             ], 401);
         }
-        
+
         $item->delete();
 
         return response()->json([
-            "status"=> true,
-            "message"=> "Item Deleted"
+            "status" => true,
+            "message" => "Item Deleted"
         ]);
     }
-
 }

@@ -19,57 +19,60 @@ class AuthController extends Controller
         $this->middleware('auth:api', ['except' => ['create_token', 'create_user', 'login_user', 'all_user']]);
     }
 
-    public function all_user(Request $request) {
+    public function all_user(Request $request)
+    {
         $user = User::all();
         return response()->json($user, 200);
     }
-    
-    public function create_user(Request $request) {
+
+    public function create_user(Request $request)
+    {
         $validate = Validator::make($request->all(), [
-            "name"=> "required",
-            "password"=> "required"
+            "name" => "required",
+            "password" => "required"
         ]);
 
-        if($validate->fails()) {
+        if ($validate->fails()) {
             response()->json([
-                "status"=> false,
-                "message"=> "Validation Error",
-                "error"=> $validate->errors()
+                "status" => false,
+                "message" => "Validation Error",
+                "error" => $validate->errors()
             ], 401);
         }
 
         $user = User::create([
-            "name"=> $request->name,
-            "password"=> $request->password
+            "name" => $request->name,
+            "password" => $request->password
         ]);
 
         return response()->json([
-            "status"=> true,
-            "message"=> "User created",
+            "status" => true,
+            "message" => "User created",
         ], 200);
     }
 
-    public function login_user(Request $request) {
+    public function login_user(Request $request)
+    {
         $validator = Validator::make($request->all(), [
-            "name"=> "required",
-            "password"=> "required"
+            "name" => "required",
+            "password" => "required"
         ]);
 
         $auth = Auth::attempt([
-            "name"=> $request->name,
-            "password"=> $request->password,
+            "name" => $request->name,
+            "password" => $request->password,
         ]);
 
-        if($auth) {
+        if ($auth) {
             return response()->json([
-                "status"=> true,
-                "message"=> "successfully login"
+                "status" => true,
+                "message" => "successfully login"
             ], 200);
         }
 
         return response()->json([
-            "status"=> false,
-            "message"=> "login fail"
+            "status" => false,
+            "message" => "login fail"
         ], 401);
     }
 

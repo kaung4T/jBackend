@@ -31,7 +31,6 @@ Route::group([
     Route::post('logout_token', [AuthController::class, 'logout_token']);
     Route::post('refresh_token', [AuthController::class, 'refresh_token']);
     Route::post('me', 'AuthController@me');
-
 });
 
 Route::post('create_user', [AuthController::class, 'create_user'])->name('create_user');
