@@ -41,3 +41,9 @@ Route::get('all_item', [ApiController::class, 'all_item'])->name('all_item');
 Route::post('create_item', [ApiController::class, 'create_item'])->name('create_item');
 Route::put('update_item/{id}', [ApiController::class, 'update_item'])->name('update_item');
 Route::delete('delete_item/{id}', [ApiController::class, 'delete_item'])->name('delete_item');
+
+// Auth
+// Route::get('all_item', [ApiController::class, 'all_item'])->name('all_item')->middleware('jwt.verify');
+// Route::post('create_item', [ApiController::class, 'create_item'])->name('create_item')->middleware('jwt.verify');
+// Route::put('update_item/{id}', [ApiController::class, 'update_item'])->name('update_item')->middleware('jwt.verify');
+// Route::delete('delete_item/{id}', [ApiController::class, 'delete_item'])->name('delete_item')->middleware('jwt.verify');
